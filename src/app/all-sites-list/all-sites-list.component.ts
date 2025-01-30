@@ -8,18 +8,30 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-all-sites-list',
-  standalone: true,
-  imports: [HttpClientModule, CommonModule,RouterModule],
-  templateUrl: './all-sites-list.component.html',
-  styleUrl: './all-sites-list.component.css',
-  providers:[ProviderList]
+  standalone: true, // This indicates that the component is standalone
+  imports: [HttpClientModule, CommonModule, RouterModule,NavbarComponent], // List of imported modules
+  templateUrl: './all-sites-list.component.html', // Path to the HTML template
+  styleUrls: ['./all-sites-list.component.css'], // Use styleUrls (plural)
+  providers: [ProviderList] // List of providers (services)
 })
 export class AllSitesListComponent implements OnInit {
   sitesModel: SitesModal = new SitesModal();
-  sitesData:any
+  sitesData:any;
+   responseData = {
+    createdDateTime: "2020-07-03T09:35:09Z",
+    description: null,
+    displayName: "User Management",
+    id: "111",
+    lastModifiedDateTime: "2020-06-27T19:31:33Z",
+    name: "sdaemoninfo.sharepoint.com",
+    root: {},
+    siteCollection: { hostname: 'sdaemoninfo.sharepoint.com' },
+    webUrl: "https://sdaemoninfo.sharepoint.com"
+  };
   constructor(
     @Inject(SHARE_POINTS_SERVICE) private sharePointService: ISharePointService, private router :Router
   ) {
@@ -28,7 +40,14 @@ export class AllSitesListComponent implements OnInit {
 
 navigate(siteId:string){
   debugger
-  this.router.navigate(["/drive-list", siteId])
+  if(siteId=='111')
+  {
+    this.router.navigate(["/user-management/user-list"])
+  }
+  else{
+    this.router.navigate(["/drive-list", siteId])
+  }
+
 }
   ngOnInit(): void {
     this.getAllSites();
@@ -39,6 +58,11 @@ navigate(siteId:string){
         debugger
         this.sitesModel = res.Data.value;
         this.sitesData= res.Data.value;
+        this.sitesData.push({
+          displayName: this.responseData.displayName,
+          id: this.responseData.id
+        });
+        console.log(this.sitesData);
       }
     });
   }
