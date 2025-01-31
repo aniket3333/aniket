@@ -133,6 +133,7 @@ export class FinanceExample {
 
   // Fetch data from API
   getAllSites() {
+    
     debugger
     this.sharePointService.viewDrivesfile(this.fileUrl).subscribe((res) => {
         debugger
