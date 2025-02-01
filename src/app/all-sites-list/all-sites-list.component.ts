@@ -34,9 +34,7 @@ export class AllSitesListComponent implements OnInit {
   };
   constructor(
     @Inject(SHARE_POINTS_SERVICE) private sharePointService: ISharePointService, private router :Router
-  ) {
-
-  }
+  ) {}
 
 navigate(siteId:string){
   debugger
